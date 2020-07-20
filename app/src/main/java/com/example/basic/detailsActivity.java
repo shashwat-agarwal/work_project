@@ -12,50 +12,108 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
 
 public class detailsActivity extends AppCompatActivity {
 
-    EditText nameE,addressE,phoneE;
-    String name,address,phone;
+    EditText nameE, addressE, phoneE, problemE;
+    String name, address, phone, problem;
     TextView dateAndTime;
     ImageView imageView;
     Button addImg;
+    Uri selectedImg;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference userRef = db.collection("user");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        dateAndTime = (TextView) findViewById(R.id.date);
-        imageView = (ImageView) findViewById(R.id.imageview);
-        nameE=(EditText)findViewById(R.id.name);
-        addressE=findViewById(R.id.address);
-        phoneE=findViewById(R.id.phone);
-        addImg=(Button)findViewById(R.id.addImg);
+        dateAndTime = findViewById(R.id.date);
+        imageView = findViewById(R.id.imageview);
+        addImg = findViewById(R.id.addImg);
 
 
         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
-
-        // textView is the TextView view that should display it
         dateAndTime.setText(currentDateTimeString);
     }
 
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.done:
+                done();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void done() {
+        nameE = findViewById(R.id.name);
+        addressE = findViewById(R.id.address);
+        phoneE = findViewById(R.id.phone);
+        problemE = findViewById(R.id.problem);
+
+        name = nameE.getText().toString().trim();
+        address = addressE.getText().toString().trim();
+        problem = problemE.getText().toString().trim();
+        phone = phoneE.getText().toString().trim();
+        Toast.makeText(this, "" + selectedImg, Toast.LENGTH_SHORT).show();
+        try {
+            Information information = new Information(name, address, problem, phone, selectedImg.toString());
+
+            userRef.add(information).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(detailsActivity.this, "Information Saved !!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(detailsActivity.this, "Error occured :-(", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.toString());
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void addImage(View view)
-    {
+    public void addImage(View view) {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-        }
-        else {
+        } else {
             getPhoto();
         }
     }
@@ -84,7 +142,7 @@ public class detailsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri selectedImg = data.getData();
+        selectedImg = data.getData();
 
         if (requestCode == 1 && data != null && resultCode == RESULT_OK) {
 
