@@ -93,10 +93,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Information userInformation=documentSnapshot.toObject(Information.class);
-                // String path=documentSnapshot.getReference().getPath();
                 String id=documentSnapshot.getId();
-
                 Intent intent= new Intent(getApplicationContext(),ProfileActivity.class);
                 intent.putExtra("id",id);
                 startActivity(intent);

@@ -36,7 +36,7 @@ public class MyAdapter extends FirestoreRecyclerAdapter<Information,MyAdapter.da
        try {
           Uri myUri = Uri.parse(model.getImgUri());
          Log.i("uri", String.valueOf(myUri));
-
+         holder.image.setVisibility(View.VISIBLE);
            Picasso.get()
                    .load(model.getImgUri())
                    .into(holder.image);
