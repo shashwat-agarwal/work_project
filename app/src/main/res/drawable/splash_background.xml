@@ -6,8 +6,9 @@
         android:left="0dp"
         android:top="0dp"
         android:drawable="@color/splash"></item>
-    <item android:drawable="@drawable/reportsicon"
+    <item
+        android:drawable="@drawable/reportsicon"
         android:gravity="center"
-        android:height="128dp"
-        android:width="128dp"></item>
+
+        />
 </layer-list>

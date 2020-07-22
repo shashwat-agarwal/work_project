@@ -23,9 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProfileActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".detailsActivity"
             android:parentActivityName=".MainActivity" />
         <activity

@@ -29,12 +29,12 @@ public class MyAdapter extends FirestoreRecyclerAdapter<Information,MyAdapter.da
     protected void onBindViewHolder(@NonNull dataHolder holder, int position, @NonNull Information model) {
 
         try{
-        holder.name.append(model.getName());
-        holder.phone.append(model.getPhone());
-        holder.problem.append(model.getProblem());
-        holder.address.append(model.getAddress());
-        holder.date.append(model.getDate());
-        holder.report.append(model.getReport());
+        holder.name.setText("Name: "+model.getName());
+        holder.phone.setText("Phone: "+model.getPhone());
+        holder.problem.setText("Purpose: "+model.getProblem());
+        holder.address.setText("Address: "+model.getAddress());
+        holder.date.setText("Date: "+model.getDate());
+        holder.report.setText("Report no: "+model.getReport());
 
 
           Uri myUri = Uri.parse(model.getImgUri());

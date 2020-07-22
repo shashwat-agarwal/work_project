@@ -34,14 +34,15 @@ import com.santalu.maskara.widget.MaskEditText;
 import java.util.Date;
 
 public class detailsActivity extends AppCompatActivity {
+    final public static int PICK_IMAGE_REQUEST = 1;
 
-    EditText nameE, addressE, problemE,reportE;
-    MaskEditText phoneE,dateE;
-    String name, address, phone, problem,date,report;
+    EditText nameE, addressE, problemE, reportE;
+    MaskEditText phoneE, dateE;
+    String name, address, phone, problem, date, report;
     TextView dateAndTime;
     ImageView imageView;
     Button addImg;
-    Uri selectedImg;
+    Uri selectedImg=null;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("user");
@@ -83,8 +84,8 @@ public class detailsActivity extends AppCompatActivity {
         addressE = findViewById(R.id.address);
         phoneE = findViewById(R.id.phone);
         problemE = findViewById(R.id.purpose);
-        dateE=findViewById(R.id.dateFill);
-        reportE=findViewById(R.id.reportNumber);
+        dateE = findViewById(R.id.dateFill);
+        reportE = findViewById(R.id.reportNumber);
 
         name = nameE.getText().toString().trim();
         address = addressE.getText().toString().trim();
@@ -92,23 +93,28 @@ public class detailsActivity extends AppCompatActivity {
         phone = phoneE.getText().toString().trim();
         date = dateE.getText().toString().trim();
         report = reportE.getText().toString().trim();
-
-        Toast.makeText(this, "" + selectedImg, Toast.LENGTH_SHORT).show();
         try {
-            Information information = new Information(name, address, problem, phone, selectedImg.toString(),date,report);
+            if (name.isEmpty()) {
+                Toast.makeText(this, "Name is compulsory", Toast.LENGTH_SHORT).show();
+            } else if (selectedImg==null) {
+                Toast.makeText(this, "Add image to proceed !!", Toast.LENGTH_SHORT).show();
+            } else {
 
-            userRef.add(information).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Toast.makeText(detailsActivity.this, "Information Saved !!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(detailsActivity.this, "Error occured :-(", Toast.LENGTH_SHORT).show();
-                }
-            });
+                Information information = new Information(name, address, problem, phone, selectedImg.toString(), date, report);
+
+                userRef.add(information).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(detailsActivity.this, "Information Saved !!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(detailsActivity.this, "Error occured :-(", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         } catch (Exception e) {
             Log.i("ERROR", e.toString());
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
@@ -117,13 +123,8 @@ public class detailsActivity extends AppCompatActivity {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void addImage(View view) {
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-        } else {
-            getPhoto();
-        }
+        getPhoto();
     }
 
     @Override
@@ -141,10 +142,11 @@ public class detailsActivity extends AppCompatActivity {
     public void getPhoto() {
 
 
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
         // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), 1);
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
     }
 
     @Override
@@ -152,7 +154,7 @@ public class detailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         selectedImg = data.getData();
 
-        if (requestCode == 1 && data != null && resultCode == RESULT_OK) {
+        if (requestCode == PICK_IMAGE_REQUEST && data != null && resultCode == RESULT_OK && data.getData() != null) {
 
             try {
                 Glide.with(getApplicationContext()).asBitmap().load(selectedImg).into(imageView);
@@ -162,4 +164,8 @@ public class detailsActivity extends AppCompatActivity {
             }
         }
     }
+
+   /* private String getFileExtension(Uri uri){
+
+    }*/
 }

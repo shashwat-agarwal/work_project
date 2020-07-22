@@ -2,6 +2,7 @@ package com.example.basic;
 
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -93,10 +95,18 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                String id=documentSnapshot.getId();
-                Intent intent= new Intent(getApplicationContext(),ProfileActivity.class);
+                try {
+                    String uri = documentSnapshot.get("imgUri").toString();
+                /*Intent intent= new Intent(getApplicationContext(),ProfileActivity.class);
                 intent.putExtra("id",id);
-                startActivity(intent);
+                startActivity(intent);*/
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(uri), "image/*");
+                    startActivity(intent);
+                }catch (Exception e){
+                    Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
