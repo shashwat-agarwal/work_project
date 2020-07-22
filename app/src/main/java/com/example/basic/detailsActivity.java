@@ -28,13 +28,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.santalu.maskara.Mask;
+import com.santalu.maskara.widget.MaskEditText;
 
 import java.util.Date;
 
 public class detailsActivity extends AppCompatActivity {
 
-    EditText nameE, addressE, phoneE, problemE;
-    String name, address, phone, problem;
+    EditText nameE, addressE, problemE,reportE;
+    MaskEditText phoneE,dateE;
+    String name, address, phone, problem,date,report;
     TextView dateAndTime;
     ImageView imageView;
     Button addImg;
@@ -79,15 +82,20 @@ public class detailsActivity extends AppCompatActivity {
         nameE = findViewById(R.id.name);
         addressE = findViewById(R.id.address);
         phoneE = findViewById(R.id.phone);
-        problemE = findViewById(R.id.problem);
+        problemE = findViewById(R.id.purpose);
+        dateE=findViewById(R.id.dateFill);
+        reportE=findViewById(R.id.reportNumber);
 
         name = nameE.getText().toString().trim();
         address = addressE.getText().toString().trim();
         problem = problemE.getText().toString().trim();
         phone = phoneE.getText().toString().trim();
+        date = dateE.getText().toString().trim();
+        report = reportE.getText().toString().trim();
+
         Toast.makeText(this, "" + selectedImg, Toast.LENGTH_SHORT).show();
         try {
-            Information information = new Information(name, address, problem, phone, selectedImg.toString());
+            Information information = new Information(name, address, problem, phone, selectedImg.toString(),date,report);
 
             userRef.add(information).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override

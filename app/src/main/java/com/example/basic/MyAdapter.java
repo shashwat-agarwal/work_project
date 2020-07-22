@@ -28,12 +28,15 @@ public class MyAdapter extends FirestoreRecyclerAdapter<Information,MyAdapter.da
     @Override
     protected void onBindViewHolder(@NonNull dataHolder holder, int position, @NonNull Information model) {
 
-        holder.name.setText(model.getName());
-        holder.phone.setText(model.getPhone());
-        holder.problem.setText(model.getProblem());
-        holder.address.setText(model.getAddress());
+        try{
+        holder.name.append(model.getName());
+        holder.phone.append(model.getPhone());
+        holder.problem.append(model.getProblem());
+        holder.address.append(model.getAddress());
+        holder.date.append(model.getDate());
+        holder.report.append(model.getReport());
 
-       try {
+
           Uri myUri = Uri.parse(model.getImgUri());
          Log.i("uri", String.valueOf(myUri));
          holder.image.setVisibility(View.VISIBLE);
@@ -43,6 +46,7 @@ public class MyAdapter extends FirestoreRecyclerAdapter<Information,MyAdapter.da
 
        }catch (Exception e){
            Log.i("error",e.toString());
+
        }
     }
 
@@ -60,15 +64,18 @@ public class MyAdapter extends FirestoreRecyclerAdapter<Information,MyAdapter.da
     }
 
     public class dataHolder extends RecyclerView.ViewHolder {
-        TextView name,address,phone,problem;
+        TextView name,address,phone,problem,date,report;
         ImageView image;
         public dataHolder(@NonNull View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.textView_name_card);
             address=itemView.findViewById(R.id.textView_address);
             phone=itemView.findViewById(R.id.textView_phone_card);
-            problem=itemView.findViewById(R.id.textView_problem);
+            problem=itemView.findViewById(R.id.textView_problem_card);
             image=itemView.findViewById(R.id.imageView_card);
+            date=itemView.findViewById(R.id.textView_date_card);
+            report=itemView.findViewById(R.id.textView_report_card);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -82,15 +82,19 @@
                 android:textSize="20sp"
                 android:paddingRight="10dp"
                 />
-            <EditText
+            <com.santalu.maskara.widget.MaskEditText
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="phone"
-                android:hint="Phone Number"
+                android:hint="Phone number"
                 android:singleLine="true"
+                app:mask="+91 (___) ___ __ __"
+                app:maskCharacter="_"
+
                 />
+
         </LinearLayout>
 
         <LinearLayout
@@ -110,129 +114,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:inputType="text"
+                android:hint="Purpose of visit"
+                android:singleLine="true"
+                android:nextFocusDown="@+id/dateFill"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date : "
+                android:textSize="20sp"
+                android:paddingRight="10dp"
+                />
+            <com.santalu.maskara.widget.MaskEditText
+                android:id="@+id/dateFill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="DD/MM/YY"
+                android:singleLine="true"
+                app:mask="__/__/__"
+                app:maskCharacter="_"
+                android:nextFocusDown="@+id/reportNumber"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/reportText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Report Number :"
+                android:textSize="20sp"
+                android:paddingRight="10dp"
+                />
+            <EditText
+                android:id="@+id/reportNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
                 android:inputType="none"
-                android:hint="Purpose Of visit"
-                android:singleLine="true"
-                android:nextFocusDown="@+id/upsInput"
+                android:hint="Report Number"
                 />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/upsInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="UPS input"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-
-                />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="UPS output"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Earthing"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight=".75"
-                android:hint="Battery make"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="NO. of batteries"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:hint="UPS volt"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                />
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight=".75"
-                android:hint="Low Batteries"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                />
-
-        </LinearLayout>
-
-
-        <EditText
-            android:id="@+id/problem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:hint="Problems Found"
-
-            />
-        <EditText
-            android:id="@+id/actionTaken"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:hint="Action Taken"
-
-            />
-        <EditText
-            android:id="@+id/materialFrom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:hint="Material From"
-
-
-
-            />
-        <EditText
-            android:id="@+id/returnDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-
-            android:hint="Return or Standby Detail"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-
-            />
 
         <Button
             android:id="@+id/addImg"
